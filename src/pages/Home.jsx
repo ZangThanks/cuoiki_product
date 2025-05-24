@@ -42,8 +42,6 @@ function Home() {
     fetchUsers();
   }, []);
 
-  console.log(users);
-
   return (
     <div>
       <button
