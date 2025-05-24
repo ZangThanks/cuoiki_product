@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import ProductCard from "../components/ProductCard";
 import { useNavigate } from "react-router-dom";
+import ProductList from "../features/ProductList";
 
 function Home() {
   const [products, setProducts] = useState([]);
@@ -43,6 +44,10 @@ function Home() {
           ))}
         </div>
       )}
+      <div>
+        <p className="text-bold text-3xl">Product with Redux</p>
+        <ProductList />
+      </div>
     </div>
   );
 }
