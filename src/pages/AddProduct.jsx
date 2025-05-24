@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function AddProduct() {
   const navigate = useNavigate();
+  //const [maxId, setMaxId] = useState(0);
   const [item, setItem] = useState({
     id: "",
     name: "",
@@ -11,10 +12,27 @@ function AddProduct() {
     image: "../milk.jpg",
   });
 
+  //   useEffect(() => {
+  //     const fetchMaxId = async () => {
+  //       try {
+  //         const res = await fetch(
+  //           "https://67deba96471aaaa742856ccc.mockapi.io/data/v1/Customers"
+  //         );
+  //         const data = await res.json();
+  //         const maxId = Math.max(...data.map((item) => item.id));
+  //         setMaxId(maxId);
+  //       } catch (error) {
+  //         console.log(error);
+  //       }
+  //     };
+  //     fetchMaxId();
+  //   }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
+      //item.id = maxId + 1;
       const res = await fetch(
         "https://67deba96471aaaa742856ccc.mockapi.io/data/v1/Customers",
         {
