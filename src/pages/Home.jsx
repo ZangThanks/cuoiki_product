@@ -66,6 +66,22 @@ function Home() {
     setProducts(sortedProducts);
   };
 
+  const handleSortWithRadio = (e) => {
+    const value = e.target.value;
+    const sortedProducts = [...products].sort((a, b) => {
+      if (value === "price-asc") {
+        return a.price - b.price;
+      } else if (value === "price-desc") {
+        return b.price - a.price;
+      } else if (value === "name-asc") {
+        return a.name.localeCompare(b.name);
+      } else if (value === "name-desc") {
+        return b.name.localeCompare(a.name);
+      }
+    });
+    setProducts(sortedProducts);
+  };
+
   return (
     <div className="w-full flex flex-col items-start justify-center p-4">
       <button
@@ -77,6 +93,47 @@ function Home() {
       <button className="bg-yellow-400 text-white mb-4" onClick={handleSort}>
         Sort
       </button>
+      <div className="p-1 mb-2">
+        <p className="text-bold text-xl">Sort</p>
+        <div className="flex gap-4">
+          <label className="flex items-center gap-2">
+            Price (Low to High)
+            <input
+              type="radio"
+              value="price-asc"
+              name="radio-sort"
+              onChange={handleSortWithRadio}
+            />
+          </label>
+          <label className="flex items-center gap-2">
+            Price (High to Low)
+            <input
+              type="radio"
+              value="price-desc"
+              name="radio-sort"
+              onChange={handleSortWithRadio}
+            />
+          </label>
+          <label className="flex items-center gap-2">
+            Name (A - Z)
+            <input
+              type="radio"
+              value="name-asc"
+              name="radio-sort"
+              onChange={handleSortWithRadio}
+            />
+          </label>
+          <label className="flex items-center gap-2">
+            Name (Z - A)
+            <input
+              type="radio"
+              value="name-desc"
+              name="radio-sort"
+              onChange={handleSortWithRadio}
+            />
+          </label>
+        </div>
+      </div>
       <input
         type="text"
         value={pName}
