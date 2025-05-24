@@ -8,6 +8,7 @@ function Home() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -26,6 +27,22 @@ function Home() {
 
     fetchProducts();
   }, []);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        await fetch("http://localhost:3001/users")
+          .then((res) => res.json())
+          .then((data) => setUsers(data));
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
+  console.log(users);
 
   return (
     <div>
@@ -50,8 +67,18 @@ function Home() {
         <ProductList />
       </div>
       <div>
-        <p className="text-bold text-3xl">Produt with useFetch</p>
+        <p className="text-bold text-3xl">Product with useFetch</p>
         <ListWithHook />
+      </div>
+      <div>
+        <p className="text-bold text-3xl">User with JsonServer</p>
+        <div className="flex flex-col gap-2">
+          {users.map((user, index) => (
+            <div key={index}>
+              <p>{user.name}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
