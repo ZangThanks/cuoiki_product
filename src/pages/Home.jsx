@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import ProductCard from "../components/ProductCard";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -25,6 +27,12 @@ function Home() {
 
   return (
     <div>
+      <button
+        className="bg-green-400 text-white mb-4"
+        onClick={() => navigate("/add")}
+      >
+        Add Product
+      </button>
       <p className="text-3xl text-bold mb-2">Products</p>
       {loading ? (
         <p>Loading...</p>
