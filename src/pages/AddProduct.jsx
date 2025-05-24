@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ModalAnounce from "../components/ModalAnounce";
 
 function AddProduct() {
   const navigate = useNavigate();
@@ -11,6 +12,7 @@ function AddProduct() {
     description: "",
     image: "../milk.jpg",
   });
+  const [isOpen, setIsOpen] = useState(false);
 
   //   useEffect(() => {
   //     const fetchMaxId = async () => {
@@ -46,8 +48,9 @@ function AddProduct() {
       if (!res.ok) {
         throw new Error("Failed to add product!!!!!");
       }
-      navigate("/");
+      setIsOpen(true);
     } catch (error) {
+      setIsOpen(true);
       console.log(error);
     }
   };
@@ -60,8 +63,21 @@ function AddProduct() {
     }));
   };
 
+  const handleClose = () => {
+    setIsOpen(false);
+    navigate("/");
+  };
+
   return (
     <div className="flex flex-col gap-4">
+      {isOpen ? (
+        <ModalAnounce
+          content="Added product successfull!"
+          handleClose={handleClose}
+        />
+      ) : (
+        <div></div>
+      )}
       <div className="flex justify-start items-center gap-2">
         <a href="" onClick={() => navigate("/")}>
           Back
@@ -95,7 +111,9 @@ function AddProduct() {
         />
         <div className="flex gap-4">
           <button className="bg-green-400 text-white h-10">Submit</button>
-          <button className="bg-red-400 text-white h-10">Clean</button>
+          <button type="button" className="bg-red-400 text-white h-10">
+            Clean
+          </button>
         </div>
       </form>
     </div>

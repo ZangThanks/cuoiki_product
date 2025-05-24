@@ -12,7 +12,7 @@ function ListWithHook() {
       {loading ? (
         <p>Loading...</p>
       ) : (
-        <div className="grid grid-cols-4 gap-4">
+        <div className="w-full grid grid-cols-4 gap-4">
           {data.map((item, index) => (
             <ProductCard key={index} item={item} />
           ))}

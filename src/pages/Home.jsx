@@ -3,12 +3,16 @@ import ProductCard from "../components/ProductCard";
 import { useNavigate } from "react-router-dom";
 import ProductList from "../features/ProductList";
 import ListWithHook from "../hooks/ListWithHook";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 function Home() {
   const [products, setProducts] = useState([]);
+  const [filterProducts, setFilterProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [users, setUsers] = useState([]);
+  const [pName, setPName] = useState("");
+  const [sorted, setSorted] = useState(false);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -42,22 +46,62 @@ function Home() {
     fetchUsers();
   }, []);
 
+  const handleFind = (e) => {
+    setPName(e.target.value);
+    if (pName.trim() === "") {
+      setFilterProducts([]);
+    } else {
+      const filterProducts = products.filter((item) =>
+        item.name.toLowerCase().includes(pName.toLowerCase())
+      );
+      setFilterProducts(filterProducts);
+    }
+  };
+
+  const handleSort = () => {
+    setSorted(!sorted);
+    const sortedProducts = [...products].sort((a, b) => {
+      return sorted ? a.price - b.price : b.price - a.price;
+    });
+    setProducts(sortedProducts);
+  };
+
   return (
-    <div>
+    <div className="w-full flex flex-col items-start justify-center p-4">
       <button
         className="bg-green-400 text-white mb-4"
         onClick={() => navigate("/add")}
       >
         Add Product
       </button>
-      <p className="text-3xl text-bold mb-2">Products</p>
+      <button className="bg-yellow-400 text-white mb-4" onClick={handleSort}>
+        Sort
+      </button>
+      <input
+        type="text"
+        value={pName}
+        onChange={handleFind}
+        placeholder="Find product name ..."
+        className="w-[400px] text-white rounded-lg p-2"
+      />
+      <p className="text-3xl text-bold mb-2">
+        Products {sorted ? "Price Des" : "Price Ins"}
+      </p>
       {loading ? (
-        <p>Loading...</p>
+        <LoadingSpinner />
       ) : (
-        <div className="grid grid-cols-4 gap-4">
-          {products.map((item, index) => (
-            <ProductCard key={index} item={item} />
-          ))}
+        <div className="w-full grid grid-cols-4 gap-4">
+          {pName.trim() === "" ? (
+            products.map((item, index) => (
+              <ProductCard key={index} item={item} />
+            ))
+          ) : filterProducts.length > 0 ? (
+            filterProducts.map((item, index) => (
+              <ProductCard key={index} item={item} />
+            ))
+          ) : (
+            <p>Not found</p>
+          )}
         </div>
       )}
       <div>
